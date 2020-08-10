@@ -1,1 +1,1 @@
-web: gunicorn minesCrowdsourcing.wsgi
+web: gunicorn chronique-timeliner.wsgi

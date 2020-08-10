@@ -1,5 +1,6 @@
 Django==3.1
 django_heroku
+gunicorn
 matplotlib
 django-bootstrap4
 django-bootstrap-datepicker-plus
