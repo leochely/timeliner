@@ -26,7 +26,7 @@ SECRET_KEY = '874@mr#y%^ou+x*zjm-+9_(vvgzl=2=-6(23o8j$u5n%s-36vf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -122,6 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
 # Configure Django App for Heroku.
 try:
