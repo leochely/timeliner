@@ -1,0 +1,22 @@
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{{ form.media }}
+
+<div id="container" class="container">
+    <div class="row">
+        <div class="col-sm-10 offset-sm-1 text-center">
+            <h1>Les Chroniques du Nouveau Monde Ultimate Timeliner</h1>
+            {% for graphic in graphics%}
+                {{ graphic | safe }}
+            {% endfor %}
+            <h2>Options de recherche</h2>
+            <form action="/timeline/" method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>

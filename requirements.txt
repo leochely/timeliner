@@ -1,0 +1,4 @@
+Django==3.1
+matplotlib
+django-bootstrap4
+django-bootstrap-datepicker-plus
