@@ -1,7 +1,7 @@
 <head>
     <title>Chroniques Du Nouveau Monde Ultimate Timeliner</title>
     <meta name="author" content="L&eacute;o Chely">
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     {% load bootstrap4 %}
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
@@ -20,7 +20,8 @@
             <form action="/timeline/" method="post">
                 {% csrf_token %}
                 {% bootstrap_form form %}
-                <input type="submit" value="Submit">
+                <button  type="submit" class="btn btn-primary">Chercher</button>
+                <a class="btn btn-primary" href="." role="button">R&eacute;initialiser les filtres</a>
             </form>
         </div>
     </div>

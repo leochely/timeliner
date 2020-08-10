@@ -61,7 +61,6 @@ def index(request):
 
 
     form = SearchForm()
-    print(len(graphics))
     return render(request, 'timeline/index.html', {'graphics': graphics, 'form': form})
 
 def makeGraph(names, dates, title):
