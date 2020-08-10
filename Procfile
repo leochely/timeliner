@@ -1,1 +1,1 @@
-web: gunicorn chronique-timeliner.wsgi
+web: gunicorn timeliner.wsgi
