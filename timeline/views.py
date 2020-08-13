@@ -31,14 +31,17 @@ def index(request):
             if form.cleaned_data["combined"]:
                 title = "Evenements pour"
                 for personnage in personnages:
-                    title += " " + personnage.name + " ,"
-                title = title[:-2]
-                for event in Evenement.objects.filter(date__range=(form.cleaned_data['date_depart'],
-                                                                   form.cleaned_data['date_fin'])):
-                    for personnage in event.personnages.all():
-                        if personnage in personnages:
-                            names.append(event.name + " " + personnage.name)
-                            dates.append(event.date)
+                    title += " " + personnage.name + ","
+
+                events = Evenement.objects.filter(personnages__id__in=personnages)
+                others = Evenement.objects.exclude(personnages__id__in=personnages)
+                queryset = Evenement.objects.filter(personnages__id__in=events)
+                queryset = queryset.exclude(personnages__id__in=others).distinct()
+
+                for event in queryset:
+                    names.append(event.name)
+                    dates.append(event.date)
+
                 graphics.append(makeGraph(names, dates, title))
             else:
                 for personnage in personnages:
@@ -65,11 +68,11 @@ def index(request):
 
 def makeGraph(names, dates, title):
     # Choose some nice levels
-    levels = np.tile([-5, 5, -3, 3, -1, 1],
+    levels = np.tile([-5, 5, -4, 4, -3, 3, -2, 2, -1, 1],
                      int(np.ceil(len(dates) / 6)))[:len(dates)]
 
     # Create figure and plot a stem plot with the date
-    fig, ax = plt.subplots(figsize=(8.8, 4), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(8.8, 6), constrained_layout=True)
     ax.set(title=title)
 
     markerline, stemline, baseline = ax.stem(dates, levels,
