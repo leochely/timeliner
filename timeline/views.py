@@ -27,7 +27,7 @@ def index(request):
             personnages = Personnage.objects.filter(
                 id__in=form.cleaned_data["personnages"])
             if form.cleaned_data["combined"]:
-                title = "Evenements pour"
+                title = "Événements pour"
                 for personnage in personnages:
                     title += " " + personnage.name + ","
 
