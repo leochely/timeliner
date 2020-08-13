@@ -4,7 +4,7 @@ from django.db import models
 class Evenement(models.Model):
     name = models.CharField(max_length=100)
     date = models.DateField()
-    description = models.CharField(max_length=100)
+    description = models.TextField()
     personnages = models.ManyToManyField("Personnage")
     categorie = models.ManyToManyField("Categorie", blank=True)
 
