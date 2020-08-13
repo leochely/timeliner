@@ -36,7 +36,8 @@ def index(request):
                 events = Evenement.objects.filter(personnages__id__in=personnages)
                 others = Evenement.objects.exclude(personnages__id__in=personnages)
                 queryset = Evenement.objects.filter(personnages__id__in=events)
-                queryset = queryset.exclude(personnages__id__in=others).distinct()
+                queryset = queryset.filter(date__range=(form.cleaned_data['date_depart'],
+                                                                   form.cleaned_data['date_fin'])).exclude(personnages__id__in=others).distinct()
 
                 for event in queryset:
                     names.append(event.name)
