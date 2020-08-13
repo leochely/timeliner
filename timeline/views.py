@@ -1,17 +1,15 @@
+from django.shortcuts import render
+import matplotlib.pyplot as plt
+import six
+import numpy as np
+from datetime import datetime
+import matplotlib.dates as mdates
+import matplotlib.ticker as ticker
 from .forms import SearchForm
 from .models import *
 
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.ticker as ticker
-import matplotlib.dates as mdates
-from datetime import datetime
-import numpy as np
-import six
-import matplotlib.pyplot as plt
-
-from django.shortcuts import render
-
 
 
 # Create your views here.
@@ -33,11 +31,13 @@ def index(request):
                 for personnage in personnages:
                     title += " " + personnage.name + ","
 
-                events = Evenement.objects.filter(personnages__id__in=personnages)
-                others = Evenement.objects.exclude(personnages__id__in=personnages)
+                events = Evenement.objects.filter(
+                    personnages__id__in=personnages)
+                others = Evenement.objects.exclude(
+                    personnages__id__in=personnages)
                 queryset = Evenement.objects.filter(personnages__id__in=events)
                 queryset = queryset.filter(date__range=(form.cleaned_data['date_depart'],
-                                                                   form.cleaned_data['date_fin'])).exclude(personnages__id__in=others).distinct()
+                                                        form.cleaned_data['date_fin'])).exclude(personnages__id__in=others).distinct()
 
                 for event in queryset:
                     names.append(event.name)
@@ -48,7 +48,7 @@ def index(request):
                 for personnage in personnages:
                     names = ["Debut recherche"]
                     dates = [form.cleaned_data["date_depart"]]
-                    title = "Evenements pour " + personnage.name
+                    title = "Événements pour " + personnage.name
                     for event in Evenement.objects.filter(date__range=(form.cleaned_data['date_depart'],
                                                                        form.cleaned_data['date_fin'])).filter(personnages=personnage):
                         names.append(event.name)
@@ -63,9 +63,9 @@ def index(request):
             dates.append(event.date)
         graphics.append(makeGraph(names, dates, title))
 
-
     form = SearchForm()
     return render(request, 'timeline/index.html', {'graphics': graphics, 'form': form})
+
 
 def makeGraph(names, dates, title):
     # Choose some nice levels
