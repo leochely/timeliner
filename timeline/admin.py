@@ -7,7 +7,12 @@ from .models import Evenement, Personnage, Categorie
 admin.site.unregister(User)
 admin.site.unregister(Group)
 
-admin.site.register(Evenement)
+class EvenementAdmin(admin.ModelAdmin):
+    list_display = ['name', 'date']
+    list_filter = ['personnages']
+    ordering = ['date']
+
+admin.site.register(Evenement, EvenementAdmin)
 admin.site.register(Personnage)
 admin.site.register(Categorie)
 
