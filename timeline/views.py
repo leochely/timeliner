@@ -32,13 +32,13 @@ def index(request):
                     title += " " + personnage.name + ","
                 title = title[:-1]
 
-                events = Evenement.objects.filter(
-                    personnages__id__in=personnages).distinct()
+                events = Evenement.objects.all()
+                for personnage in personnages:
+                    events = events.filter(personnages=personnage)
 
                 for event in events:
-                    if any(personnage in personnages for personnage in event.personnages.all()):
-                        names.append(event.name)
-                        dates.append(event.date)
+                    names.append(event.name)
+                    dates.append(event.date)
 
                 graphics.append(makeGraph(names, dates, title))
             else:
