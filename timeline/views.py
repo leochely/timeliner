@@ -70,7 +70,7 @@ def makeGraph(names, dates, title):
                      int(np.ceil(len(dates) / 6)))[:len(dates)]
 
     # Create figure and plot a stem plot with the date
-    fig, ax = plt.subplots(figsize=(8.8, 6), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(11, 8), constrained_layout=True)
     ax.set(title=title)
 
     markerline, stemline, baseline = ax.stem(dates, levels,
