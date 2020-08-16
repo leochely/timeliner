@@ -25,12 +25,17 @@ def index(request):
         # check whether it's valid:
         if form.is_valid():
             personnages = Personnage.objects.filter(
-                id__in=form.cleaned_data["personnages"])
+                id__in=form.cleaned_data['personnages'])
+
+            events = Evenement.objects.all()
+            if form.cleaned_data['categories']:
+                for categorie in form.cleaned_data['events']:
+                    events = events.filter(categories=categorie)
 
             if not form.cleaned_data["personnages"]:
                 title = "Événements de " + form.cleaned_data['date_depart'].strftime(
                     "%m/%d/%Y") + " à " + form.cleaned_data['date_fin'].strftime("%m/%d/%Y")
-                events = Evenement.objects.filter(date__range=(
+                events = events.objects.filter(date__range=(
                     form.cleaned_data['date_depart'], form.cleaned_data['date_fin']))
                 for event in events:
                     names.append(event.name)
@@ -38,7 +43,7 @@ def index(request):
 
                 graphics.append(makeGraph(names, dates, title))
 
-            elif form.cleaned_data["combined"]:
+            elif form.cleaned_data['combined']:
                 title = "Événements pour"
                 for personnage in personnages:
                     title += " " + personnage.name + ","
@@ -46,7 +51,6 @@ def index(request):
                 title += " de " + form.cleaned_data['date_depart'].strftime(
                     "%m/%d/%Y") + " à " + form.cleaned_data['date_fin'].strftime("%m/%d/%Y")
 
-                events = Evenement.objects.all()
                 for personnage in personnages:
                     events = events.filter(personnages=personnage)
 
