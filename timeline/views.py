@@ -35,7 +35,7 @@ def index(request):
             if not form.cleaned_data["personnages"]:
                 title = "Événements de " + form.cleaned_data['date_depart'].strftime(
                     "%m/%d/%Y") + " à " + form.cleaned_data['date_fin'].strftime("%m/%d/%Y")
-                events = events.objects.filter(date__range=(
+                events = events.filter(date__range=(
                     form.cleaned_data['date_depart'], form.cleaned_data['date_fin']))
                 for event in events:
                     names.append(event.name)
@@ -65,7 +65,7 @@ def index(request):
                     dates = [form.cleaned_data["date_depart"]]
                     title = "Événements pour " + personnage.name + " de " + form.cleaned_data['date_depart'].strftime(
                         "%m/%d/%Y") + " à " + form.cleaned_data['date_fin'].strftime("%m/%d/%Y")
-                    for event in Evenement.objects.filter(date__range=(form.cleaned_data['date_depart'],
+                    for event in events.filter(date__range=(form.cleaned_data['date_depart'],
                                                                        form.cleaned_data['date_fin'])).filter(personnages=personnage):
                         names.append(event.name)
                         dates.append(event.date)
