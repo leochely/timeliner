@@ -30,7 +30,7 @@ def index(request):
             events = Evenement.objects.all()
             if form.cleaned_data['categories']:
                 for categorie in form.cleaned_data['categories']:
-                    events = events.filter(categories=categorie)
+                    events = events.filter(categorie=categorie)
 
             if not form.cleaned_data["personnages"]:
                 title = "Événements de " + form.cleaned_data['date_depart'].strftime(
