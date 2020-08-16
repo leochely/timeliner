@@ -26,11 +26,25 @@ def index(request):
         if form.is_valid():
             personnages = Personnage.objects.filter(
                 id__in=form.cleaned_data["personnages"])
-            if form.cleaned_data["combined"]:
+
+            if not form.cleaned_data["personnages"]:
+                title = "Événements de " + form.cleaned_data['date_depart'].strftime(
+                    "%m/%d/%Y") + " à " + form.cleaned_data['date_fin'].strftime("%m/%d/%Y")
+                events = Evenement.objects.filter(date__range=(
+                    form.cleaned_data['date_depart'], form.cleaned_data['date_fin']))
+                for event in events:
+                    names.append(event.name)
+                    dates.append(event.date)
+
+                graphics.append(makeGraph(names, dates, title))
+
+            elif form.cleaned_data["combined"]:
                 title = "Événements pour"
                 for personnage in personnages:
                     title += " " + personnage.name + ","
                 title = title[:-1]
+                title += " de " + form.cleaned_data['date_depart'].strftime(
+                    "%m/%d/%Y") + " à " + form.cleaned_data['date_fin'].strftime("%m/%d/%Y")
 
                 events = Evenement.objects.all()
                 for personnage in personnages:
@@ -45,7 +59,8 @@ def index(request):
                 for personnage in personnages:
                     names = ["Debut recherche"]
                     dates = [form.cleaned_data["date_depart"]]
-                    title = "Événements pour " + personnage.name
+                    title = "Événements pour " + personnage.name + " de " + form.cleaned_data['date_depart'].strftime(
+                        "%m/%d/%Y") + " à " + form.cleaned_data['date_fin'].strftime("%m/%d/%Y")
                     for event in Evenement.objects.filter(date__range=(form.cleaned_data['date_depart'],
                                                                        form.cleaned_data['date_fin'])).filter(personnages=personnage):
                         names.append(event.name)
