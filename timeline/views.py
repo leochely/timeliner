@@ -46,7 +46,9 @@ def index(request):
                 for event in events:
                     names.append(event.name)
                     dates.append(event.date)
-                    print(event.date)
+                    if form.cleaned_data["flashback"] and event.flashback_date:
+                        names.append(event.name + " flashback")
+                        dates.append(event.flashback_date)
 
                 graphics.append(makeGraph(names, dates, title))
 
@@ -64,6 +66,9 @@ def index(request):
                 for event in events:
                     names.append(event.name)
                     dates.append(event.date)
+                    if form.cleaned_data["flashback"] and event.flashback_date:
+                        names.append(event.name + " flashback")
+                        dates.append(event.flashback_date)
 
                 graphics.append(makeGraph(names, dates, title))
             else:
@@ -71,12 +76,16 @@ def index(request):
                     names = ["Debut recherche"]
                     dates = [form.cleaned_data["date_depart"]]
                     title = "Événements pour " + personnage.name + " de " + \
-                        _date(form.cleaned_data['date_depart'], "d M Y")
-                    + " à " + _date(form.cleaned_data['date_fin'], "d M Y")
+                        _date(form.cleaned_data['date_depart'], "d M Y") + \
+                        " à " + _date(form.cleaned_data['date_fin'], "d M Y")
                     for event in events.filter(date__range=(form.cleaned_data['date_depart'],
                                                             form.cleaned_data['date_fin'])).filter(personnages=personnage):
                         names.append(event.name)
                         dates.append(event.date)
+                        if form.cleaned_data["flashback"] and event.flashback_date:
+                            names.append(event.name + " flashback")
+                            dates.append(event.flashback_date)
+
                     names.append("Fin recherche")
                     dates.append(form.cleaned_data["date_fin"])
                     graphics.append(makeGraph(names, dates, title))
