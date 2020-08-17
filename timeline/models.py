@@ -7,6 +7,7 @@ class Evenement(models.Model):
     description = models.TextField()
     personnages = models.ManyToManyField("Personnage")
     categorie = models.ManyToManyField("Categorie", blank=True)
+    flashback_date = models.DateField("Date de récit d'un flashback", blank=True)
 
     def __str__(self):
         return self.name
