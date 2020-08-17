@@ -15,7 +15,7 @@ from .models import *
 
 import matplotlib
 matplotlib.use('Agg')
-# locale.setlocale(locale.LC_ALL, 'fr')
+locale.setlocale(locale.LC_ALL, 'fr')
 
 # Create your views here.
 
