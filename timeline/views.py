@@ -1,16 +1,21 @@
 from django.shortcuts import render
-import matplotlib.pyplot as plt
+from django.template.defaultfilters import date as _date
+
 import six
 import numpy as np
+import locale
 from datetime import datetime
+
+import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.ticker as ticker
+
 from .forms import SearchForm
 from .models import *
 
 import matplotlib
 matplotlib.use('Agg')
-
+locale.setlocale(locale.LC_ALL, 'fr')
 
 # Create your views here.
 
@@ -33,13 +38,15 @@ def index(request):
                     events = events.filter(categorie=categorie)
 
             if not form.cleaned_data["personnages"]:
-                title = "Événements de " + form.cleaned_data['date_depart'].strftime(
-                    "%m/%d/%Y") + " à " + form.cleaned_data['date_fin'].strftime("%m/%d/%Y")
+                title = "Événements de " + \
+                    _date(form.cleaned_data['date_depart'], "d M Y") + \
+                    " à " + _date(form.cleaned_data['date_fin'], "d M Y")
                 events = events.filter(date__range=(
                     form.cleaned_data['date_depart'], form.cleaned_data['date_fin']))
                 for event in events:
                     names.append(event.name)
                     dates.append(event.date)
+                    print(event.date)
 
                 graphics.append(makeGraph(names, dates, title))
 
@@ -48,8 +55,8 @@ def index(request):
                 for personnage in personnages:
                     title += " " + personnage.name + ","
                 title = title[:-1]
-                title += " de " + form.cleaned_data['date_depart'].strftime(
-                    "%m/%d/%Y") + " à " + form.cleaned_data['date_fin'].strftime("%m/%d/%Y")
+                title += " de " + _date(form.cleaned_data['date_depart'], "d M Y") + " à " + _date(
+                    form.cleaned_data['date_fin'], "d M Y")
 
                 for personnage in personnages:
                     events = events.filter(personnages=personnage)
@@ -63,10 +70,11 @@ def index(request):
                 for personnage in personnages:
                     names = ["Debut recherche"]
                     dates = [form.cleaned_data["date_depart"]]
-                    title = "Événements pour " + personnage.name + " de " + form.cleaned_data['date_depart'].strftime(
-                        "%m/%d/%Y") + " à " + form.cleaned_data['date_fin'].strftime("%m/%d/%Y")
+                    title = "Événements pour " + personnage.name + " de " + \
+                        _date(form.cleaned_data['date_depart'], "d M Y")
+                    + " à " + _date(form.cleaned_data['date_fin'], "d M Y")
                     for event in events.filter(date__range=(form.cleaned_data['date_depart'],
-                                                                       form.cleaned_data['date_fin'])).filter(personnages=personnage):
+                                                            form.cleaned_data['date_fin'])).filter(personnages=personnage):
                         names.append(event.name)
                         dates.append(event.date)
                     names.append("Fin recherche")
