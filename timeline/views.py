@@ -11,7 +11,7 @@ import matplotlib.dates as mdates
 import matplotlib.ticker as ticker
 
 from .forms import SearchForm
-from .models import *
+# from .models import *
 
 import matplotlib
 matplotlib.use('Agg')
