@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 class Evenement(models.Model):
@@ -14,6 +15,7 @@ class Evenement(models.Model):
 
 class Personnage(models.Model):
     name = models.CharField(max_length=100)
+    date_naissance = models.DateField(default=datetime.now())
 
     def __str__(self):
         return self.name
