@@ -55,7 +55,8 @@ def index(request):
             elif form.cleaned_data['combined']:
                 title = "Événements pour"
                 for personnage in personnages:
-                    title += " " + personnage.name + ","
+                    title += " " + personnage.name + years_between(
+                        personnage, form.cleaned_data['date_depart'], form.cleaned_data['date_fin']) + ","
                 title = title[:-1]
                 title += " de " + _date(form.cleaned_data['date_depart'], "d M Y") + " à " + _date(
                     form.cleaned_data['date_fin'], "d M Y")
@@ -75,9 +76,10 @@ def index(request):
                 for personnage in personnages:
                     names = ["Debut recherche"]
                     dates = [form.cleaned_data["date_depart"]]
-                    title = "Événements pour " + personnage.name + " de " + \
-                        _date(form.cleaned_data['date_depart'], "d M Y") + \
-                        " à " + _date(form.cleaned_data['date_fin'], "d M Y")
+                    title = "Événements pour " + personnage.name + " " + years_between(
+                        personnage, form.cleaned_data['date_depart'], form.cleaned_data['date_fin']) + " de " + _date(
+                        form.cleaned_data['date_depart'], "d M Y") + " à " + _date(
+                        form.cleaned_data['date_fin'], "d M Y")
                     for event in events.filter(date__range=(form.cleaned_data['date_depart'],
                                                             form.cleaned_data['date_fin'])).filter(personnages=personnage):
                         names.append(event.name)
@@ -141,3 +143,10 @@ def makeGraph(names, dates, title):
     plt.clf()
 
     return tmp.getvalue()
+
+
+def years_between(personnage, d1, d2):
+    age1 = int(abs((d1 - personnage.date_naissance)).days / 365)
+    age2 = int(abs((d2 - personnage.date_naissance)).days / 365)
+
+    return ("(" + str(age1) + "-" + str(age2)    + " ans)")
